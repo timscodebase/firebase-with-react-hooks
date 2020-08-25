@@ -15,8 +15,8 @@ export const authenticateAnonymously = () => {
   return firebase.auth().signInAnonymously();
 };
 
-export const createDictionary = (userName, userId) => {
-  return db.collection("dictionaries").add({
+export const createGroceryList = (userName, userId) => {
+  return db.collection("dictionarys").add({
     created: firebase.firestore.FieldValue.serverTimestamp(),
     createdBy: userId,
     users: [
@@ -28,30 +28,30 @@ export const createDictionary = (userName, userId) => {
   });
 };
 
-export const getDictionary = (dictionaryId) => {
-  return db.collection("dictionaries").doc(dictionaryId).get();
+export const getGroceryList = (dictionaryId) => {
+  return db.collection("dictionarys").doc(dictionaryId).get();
 };
 
-export const getDictionaryItems = (dictionaryId) => {
+export const getGroceryListItems = (dictionaryId) => {
   return db
-    .collection("dictionaries")
+    .collection("dictionarys")
     .doc(dictionaryId)
     .collection("items")
     .get();
 };
 
-export const streamDictionaryItems = (dictionaryId, observer) => {
+export const streamGroceryListItems = (dictionaryId, observer) => {
   return db
-    .collection("dictionaries")
+    .collection("dictionarys")
     .doc(dictionaryId)
     .collection("items")
     .orderBy("created")
     .onSnapshot(observer);
 };
 
-export const addUserToDictionary = (userName, dictionaryId, userId) => {
+export const addUserToGroceryList = (userName, dictionaryId, userId) => {
   return db
-    .collection("dictionaries")
+    .collection("dictionarys")
     .doc(dictionaryId)
     .update({
       users: firebase.firestore.FieldValue.arrayUnion({
@@ -61,8 +61,8 @@ export const addUserToDictionary = (userName, dictionaryId, userId) => {
     });
 };
 
-export const addDictionaryItem = (item, dictionaryId, userId) => {
-  return getDictionaryItems(dictionaryId)
+export const addGroceryListItem = (item, dictionaryId, userId) => {
+  return getGroceryListItems(dictionaryId)
     .then((querySnapshot) => querySnapshot.docs)
     .then((dictionaryItems) =>
       dictionaryItems.find(
@@ -73,7 +73,7 @@ export const addDictionaryItem = (item, dictionaryId, userId) => {
     .then((matchingItem) => {
       if (!matchingItem) {
         return db
-          .collection("dictionaries")
+          .collection("dictionarys")
           .doc(dictionaryId)
           .collection("items")
           .add({

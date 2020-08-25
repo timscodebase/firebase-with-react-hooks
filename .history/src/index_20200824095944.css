@@ -4,7 +4,6 @@
   --header-text-color: rgb(238, 71, 202);
   --dark-text: var(--dark-background-color);
   --light-text: var(--light-background-color);
-  --interface-highlight: rgb(112, 112, 112);
   --dark: var(--dark-background-color);
   --light: var(--light-background-color);
   --bright-button: var(--header-text-color);
@@ -16,17 +15,11 @@
   box-sizing: border-box;
 }
 
-header {
-  color: var(--header-text-color);
-}
-
 button {
+  padding: 0.6rem;
   border: none;
   outline: none;
   user-select: none;
-
-  padding: 0.6rem;
-  margin-top: 0.6rem;
   text-transform: uppercase;
 }
 

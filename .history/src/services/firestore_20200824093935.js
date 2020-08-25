@@ -16,7 +16,9 @@ export const authenticateAnonymously = () => {
 };
 
 export const createDictionary = (userName, userId) => {
-  return db.collection("dictionaries").add({
+  console.log("createDictionary called");
+  console.log(userId);
+  return db.collection("dictionarys").add({
     created: firebase.firestore.FieldValue.serverTimestamp(),
     createdBy: userId,
     users: [
@@ -29,12 +31,12 @@ export const createDictionary = (userName, userId) => {
 };
 
 export const getDictionary = (dictionaryId) => {
-  return db.collection("dictionaries").doc(dictionaryId).get();
+  return db.collection("dictionarys").doc(dictionaryId).get();
 };
 
 export const getDictionaryItems = (dictionaryId) => {
   return db
-    .collection("dictionaries")
+    .collection("dictionarys")
     .doc(dictionaryId)
     .collection("items")
     .get();
@@ -42,7 +44,7 @@ export const getDictionaryItems = (dictionaryId) => {
 
 export const streamDictionaryItems = (dictionaryId, observer) => {
   return db
-    .collection("dictionaries")
+    .collection("dictionarys")
     .doc(dictionaryId)
     .collection("items")
     .orderBy("created")
@@ -51,7 +53,7 @@ export const streamDictionaryItems = (dictionaryId, observer) => {
 
 export const addUserToDictionary = (userName, dictionaryId, userId) => {
   return db
-    .collection("dictionaries")
+    .collection("dictionarys")
     .doc(dictionaryId)
     .update({
       users: firebase.firestore.FieldValue.arrayUnion({
@@ -73,7 +75,7 @@ export const addDictionaryItem = (item, dictionaryId, userId) => {
     .then((matchingItem) => {
       if (!matchingItem) {
         return db
-          .collection("dictionaries")
+          .collection("dictionarys")
           .doc(dictionaryId)
           .collection("items")
           .add({

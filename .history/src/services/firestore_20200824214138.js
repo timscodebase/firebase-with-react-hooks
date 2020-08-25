@@ -16,7 +16,7 @@ export const authenticateAnonymously = () => {
 };
 
 export const createDictionary = (userName, userId) => {
-  return db.collection("dictionaries").add({
+  db.collection("dictionaries").add({
     created: firebase.firestore.FieldValue.serverTimestamp(),
     createdBy: userId,
     users: [

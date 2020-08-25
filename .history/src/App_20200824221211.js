@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import * as FirestoreService from "./services/firestore";
 
-import CreateList from "./scenes/CreateDictionary/CreateDictionary";
-import JoinList from "./scenes/JoinDictionary/JoinDictionary";
+import CreateList from "./scenes/CreateList/CreateList";
+import JoinList from "./scenes/JoinList/JoinList";
 import EditList from "./scenes/EditDictionary/EditDictionary";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 

@@ -2,9 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import * as FirestoreService from "./services/firestore";
 
-import CreateList from "./scenes/CreateDictionary/CreateDictionary";
-import JoinList from "./scenes/JoinDictionary/JoinDictionary";
-import EditList from "./scenes/EditDictionary/EditDictionary";
+import CreateList from "./scenes/CreateList/CreateList";
+import JoinList from "./scenes/JoinList/JoinList";
+import EditList from "./scenes/EditList/EditList";
 import ErrorMessage from "./components/ErrorMessage/ErrorMessage";
 
 import useQueryString from "./hooks/useQueryString";
@@ -12,11 +12,11 @@ import useQueryString from "./hooks/useQueryString";
 function App() {
   const [user, setUser] = useState();
   const [userId, setUserId] = useState();
-  const [dictionary, setDictionary] = useState();
+  const [dictionary, setGroceryList] = useState();
   const [error, setError] = useState();
 
   // Use a custom hook to subscribe to the grocery list ID provided as a URL query parameter
-  const [dictionaryId, setDictionaryId] = useQueryString("listId");
+  const [dictionaryId, setGroceryListId] = useQueryString("listId");
 
   // Use an effect to authenticate and load the grocery list from the database
   useEffect(() => {
@@ -24,37 +24,37 @@ function App() {
       .then((userCredential) => {
         setUserId(userCredential.user.uid);
         if (dictionaryId) {
-          FirestoreService.getDictionary(dictionaryId)
+          FirestoreService.getGroceryList(dictionaryId)
             .then((dictionary) => {
               if (dictionary.exists) {
                 setError(null);
-                setDictionary(dictionary.data());
+                setGroceryList(dictionary.data());
               } else {
                 setError("grocery-list-not-found");
-                setDictionaryId();
+                setGroceryListId();
               }
             })
             .catch(() => setError("grocery-list-get-fail"));
         }
       })
       .catch(() => setError("anonymous-auth-failed"));
-  }, [dictionaryId, setDictionaryId]);
+  }, [dictionaryId, setGroceryListId]);
 
-  function onDictionaryCreate(dictionaryId, userName) {
-    setDictionaryId(dictionaryId);
+  function onGroceryListCreate(dictionaryId, userName) {
+    setGroceryListId(dictionaryId);
     setUser(userName);
   }
 
-  function onCloseDictionary() {
-    setDictionaryId();
-    setDictionary();
+  function onCloseGroceryList() {
+    setGroceryListId();
+    setGroceryList();
     setUser();
   }
 
   function onSelectUser(userName) {
     setUser(userName);
-    FirestoreService.getDictionary(dictionaryId)
-      .then((updatedDictionary) => setDictionary(updatedDictionary.data()))
+    FirestoreService.getGroceryList(dictionaryId)
+      .then((updatedGroceryList) => setGroceryList(updatedGroceryList.data()))
       .catch(() => setError("grocery-list-get-fail"));
   }
 
@@ -62,7 +62,7 @@ function App() {
   if (dictionary && user) {
     return (
       <EditList
-        {...{ dictionaryId, user, onCloseDictionary, userId }}
+        {...{ dictionaryId, user, onCloseGroceryList, userId }}
       ></EditList>
     );
   } else if (dictionary) {
@@ -71,7 +71,7 @@ function App() {
         <ErrorMessage errorCode={error}></ErrorMessage>
         <JoinList
           users={dictionary.users}
-          {...{ dictionaryId, onSelectUser, onCloseDictionary, userId }}
+          {...{ dictionaryId, onSelectUser, onCloseGroceryList, userId }}
         ></JoinList>
       </div>
     );
@@ -79,7 +79,7 @@ function App() {
   return (
     <div>
       <ErrorMessage errorCode={error}></ErrorMessage>
-      <CreateList onCreate={onDictionaryCreate} userId={userId}></CreateList>
+      <CreateList onCreate={onGroceryListCreate} userId={userId}></CreateList>
     </div>
   );
 }
