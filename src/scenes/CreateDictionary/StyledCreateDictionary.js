@@ -9,17 +9,4 @@ const StyledCreateDictionary = styled.div`
   }
 `;
 
-const Form = styled.form`
-  @media (max-width: 1000px) {
-    button,
-    input {
-      width: 100%;
-    }
-
-    button {
-      background-color: var(--bright-button);
-    }
-  }
-`;
-
-export { Form, StyledCreateDictionary };
+export { StyledCreateDictionary };

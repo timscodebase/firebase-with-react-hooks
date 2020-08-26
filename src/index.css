@@ -2,9 +2,10 @@
   --dark-background-color: rgb(31, 31, 31);
   --light-background-color: rgb(223, 223, 223);
   --header-text-color: rgb(238, 71, 202);
+  --interface-highlight: rgb(112, 112, 112);
   --dark-text: var(--dark-background-color);
   --light-text: var(--light-background-color);
-  --interface-highlight: rgb(112, 112, 112);
+  --bright-interface-highlight: var(--header-text-color);
   --dark: var(--dark-background-color);
   --light: var(--light-background-color);
   --bright-button: var(--header-text-color);

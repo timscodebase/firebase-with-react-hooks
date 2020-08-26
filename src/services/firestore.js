@@ -32,19 +32,19 @@ export const getDictionary = (dictionaryId) => {
   return db.collection("dictionaries").doc(dictionaryId).get();
 };
 
-export const getDictionaryItems = (dictionaryId) => {
+export const getDictionaryWords = (dictionaryId) => {
   return db
     .collection("dictionaries")
     .doc(dictionaryId)
-    .collection("items")
+    .collection("words")
     .get();
 };
 
-export const streamDictionaryItems = (dictionaryId, observer) => {
+export const streamDictionaryWords = (dictionaryId, observer) => {
   return db
     .collection("dictionaries")
     .doc(dictionaryId)
-    .collection("items")
+    .collection("words")
     .orderBy("created")
     .onSnapshot(observer);
 };
@@ -61,27 +61,29 @@ export const addUserToDictionary = (userName, dictionaryId, userId) => {
     });
 };
 
-export const addDictionaryItem = (item, dictionaryId, userId) => {
-  return getDictionaryItems(dictionaryId)
+export const addDictionaryWord = (word, definition, dictionaryId, userId) => {
+  console.log(definition);
+  return getDictionaryWords(dictionaryId)
     .then((querySnapshot) => querySnapshot.docs)
-    .then((dictionaryItems) =>
-      dictionaryItems.find(
-        (dictionaryItem) =>
-          dictionaryItem.data().name.toLowerCase() === item.toLowerCase()
+    .then((dictionaryWords) =>
+      dictionaryWords.find(
+        (dictionaryWord) =>
+          dictionaryWord.data().name.toLowerCase() === word.toLowerCase()
       )
     )
-    .then((matchingItem) => {
-      if (!matchingItem) {
+    .then((matchingWord) => {
+      if (!matchingWord) {
         return db
           .collection("dictionaries")
           .doc(dictionaryId)
-          .collection("items")
+          .collection("words")
           .add({
-            name: item,
+            word,
+            definition,
             created: firebase.firestore.FieldValue.serverTimestamp(),
             createdBy: userId,
           });
       }
-      throw new Error("duplicate-item-error");
+      throw new Error("duplicate-word-error");
     });
 };

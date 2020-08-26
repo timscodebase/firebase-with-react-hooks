@@ -1,18 +1,23 @@
 import React, { useState } from "react";
 import "./StyledJoinDictionary.js";
-import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 import * as FirestoreService from "../../services/firestore";
 
-function JoinList(props) {
-  const {
-    users,
-    dictionaryId,
-    onSelectUser,
-    onCloseDictionary,
-    userId,
-  } = props;
+import { Button, Input } from "../../components/UI";
+import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
+export default function JoinDictionary({
+  users,
+  dictionaryId,
+  onSelectUser,
+  onCloseDictionary,
+  userId,
+}) {
   const [error, setError] = useState();
+  const [userName, setUserName] = useState("");
+
+  function handleChange(e) {
+    setUserName(e.target.value);
+  }
 
   function addExistingUser(e) {
     e.preventDefault();
@@ -21,9 +26,9 @@ function JoinList(props) {
 
   function getUserButtonList() {
     const buttonList = users.map((user) => (
-      <button key={user.name} onClick={addExistingUser}>
+      <Button key={user.name} onClick={addExistingUser}>
         {user.name}
-      </button>
+      </Button>
     ));
     return <div className="button-group">{buttonList}</div>;
   }
@@ -31,12 +36,6 @@ function JoinList(props) {
   function addNewUser(e) {
     e.preventDefault();
     setError(null);
-
-    const userName = document.addUserToListForm.name.value;
-    if (!userName) {
-      setError("user-name-required");
-      return;
-    }
 
     if (users.find((user) => user.name === userName)) {
       onSelectUser(userName);
@@ -64,8 +63,12 @@ function JoinList(props) {
             {getUserButtonList()}
             <p>...or enter your name to join the list...</p>
             <p>
-              <input type="text" name="name" />
-              <button onClick={addNewUser}>Join</button>
+              <Input
+                type="text"
+                placeholder="Enter your name"
+                onChange={handleChange}
+              />
+              <Button onClick={addNewUser}>Join</Button>
             </p>
             <ErrorMessage errorCode={error}></ErrorMessage>
             <p>
@@ -80,5 +83,3 @@ function JoinList(props) {
     </div>
   );
 }
-
-export default JoinList;

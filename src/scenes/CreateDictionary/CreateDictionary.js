@@ -1,6 +1,8 @@
 import React, { useState } from "react";
-import { Form, StyledCreateDictionary } from "./StyledCreateDictionary";
+import { StyledCreateDictionary } from "./StyledCreateDictionary";
 import * as FirestoreService from "../../services/firestore";
+
+import { Button, Input } from "../../components/UI";
 import ErrorMessage from "../../components/ErrorMessage/ErrorMessage";
 
 export default function CreateList(props) {
@@ -36,16 +38,15 @@ export default function CreateList(props) {
         <h1>The Hellbonix Dictionary!</h1>
       </header>
       <div className="create-container">
-        <Form>
-          <input
+        <form>
+          <Input
             placeholder="Please enter your name 😀"
             type="text"
-            name="userName"
             onChange={handleInputChange}
           />
           <ErrorMessage errorCode={error}></ErrorMessage>
-          <button onClick={createDictionary}>Continue</button>
-        </Form>
+          <Button onClick={createDictionary}>Continue</Button>
+        </form>
       </div>
     </StyledCreateDictionary>
   );
